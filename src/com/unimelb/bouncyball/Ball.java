@@ -30,7 +30,6 @@ public class Ball {
           setY(5*screenHeight/10);
           setXSpeed(0);
           setYSpeed(0);
-          
           updatePosition(x, y);
     }
     

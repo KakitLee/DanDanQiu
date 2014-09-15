@@ -25,8 +25,8 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	
 	private static float speed = 10;
 	
-	private int width;
-	private int height;
+	public static int width;
+	public static int height;
 	
 	public WorldView(Context context, AttributeSet attrs) {
 		super(context, attrs);

@@ -10,8 +10,8 @@ import android.util.Log;
 
 
 public class Bar {
-	private static float length = 150;
-	private static float width = 12;
+	private static float length = WorldView.width/5;
+	private static float width = WorldView.height/102;
 	
     private WorldView worldView;
     private Bitmap bmp;
@@ -22,6 +22,7 @@ public class Bar {
     
     private int screenWidth;
     private int screenHeight;
+	private String Main;
     
     public Bar(WorldView worldView, Bitmap bmp, int screenWidth, int screenHeight) {
     	  this.worldView = worldView;
