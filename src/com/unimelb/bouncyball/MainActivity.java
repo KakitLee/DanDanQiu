@@ -27,7 +27,6 @@ import java.util.UUID;
 
 public class MainActivity extends Activity {
 
-	private final String TAG = "Main";
 	private WorldView worldView;
 	
 	@Override

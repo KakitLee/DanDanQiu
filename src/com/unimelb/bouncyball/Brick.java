@@ -1,0 +1,92 @@
+package com.unimelb.bouncyball;
+
+import java.util.Random;
+
+import android.annotation.SuppressLint;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+
+public class Brick {
+
+
+	private float x;
+	private float y;
+	
+	private float length;
+	private float width;
+	
+    private int screenWidth;
+    private int screenHeight;
+	
+	private boolean live;
+	private int hitTimes;
+	
+    private WorldView worldView;
+    
+	
+	public Brick (WorldView worldView,float x, float y,float length, float width){
+		
+		this.x = x;
+		this.y = y;
+		live = true;
+		Random rn = new Random();
+		hitTimes = rn.nextInt(3) + 1;
+		this.worldView=worldView;
+		this.screenWidth=worldView.getWidth();
+		this.screenHeight=worldView.getHeight();
+		this.length = length;
+		this.width = width; 
+	}
+	
+	public float getLength()
+	{
+		return length;
+	}
+	
+	public float getWidth()
+	{
+		return width;
+	}
+	
+	public float getX(){
+		return x;
+	}
+	
+	public float getY()
+	{
+		return y;
+	}
+
+	public boolean getLive()
+	{
+		return live;
+	}
+
+	public void eliminateBrick(){
+		hitTimes=hitTimes-1;
+		if(hitTimes == 0)
+			live = false;
+	}
+	
+    @SuppressLint("DrawAllocation")
+	public void onDraw(Canvas canvas) {
+    	if(live == true){
+    	
+    		Paint paint = new Paint();
+    		paint.setAntiAlias(true);
+    		if (hitTimes == 3)
+    			paint.setColor(Color.YELLOW);
+    		else if (hitTimes == 2)
+    			paint.setColor(Color.CYAN);
+    		else 
+    			paint.setColor(Color.RED);
+    		if(worldView.onScreen) 
+    		{
+    			RectF r = new RectF(x-length/2,y-width/2,x+length/2,y+width/2);
+    			canvas.drawRect(r, paint);
+    		}
+    	}
+    }
+}

@@ -10,7 +10,6 @@ import android.util.Log;
 
 
 public class Bar {
-	private final String TAG = "Main";
 	private static float length = 150;
 	private static float width = 12;
 	
@@ -25,7 +24,6 @@ public class Bar {
     private int screenHeight;
     
     public Bar(WorldView worldView, Bitmap bmp, int screenWidth, int screenHeight) {
-          Log.i(TAG,"this is reh 1"); 
     	  this.worldView = worldView;
           this.bmp = bmp;
           this.screenWidth = screenWidth;
@@ -50,6 +48,10 @@ public class Bar {
 		return x;
 	}
 
+    public float getY() {
+		return y;
+	}
+    
 	public void setX(float x) {
 		this.x = x;
 		if(x>screenWidth-length/2)
@@ -58,9 +60,6 @@ public class Bar {
 			this.x=length/2;
 	}
 
-    public float getY() {
-		return y;
-	}
 
 	public void setY(float d) {
 		this.y = d;
@@ -77,7 +76,6 @@ public class Bar {
    
     @SuppressLint("DrawAllocation")
 	public void onDraw(Canvas canvas) {
-    	Log.i(TAG,"this is reg 4"); 
     	Paint paint = new Paint();
     	paint.setAntiAlias(true);
     	paint.setColor(Color.BLUE);

@@ -13,14 +13,16 @@ import android.view.SurfaceView;
 import java.io.OutputStream;
 
 public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-	private final String TAG = "Main";
+
 	private SurfaceHolder surfaceHolder;
 	private boolean running = false;
 	public Ball ball;
 	public Bar bar;
+	public Bricks bricks;
 	public boolean onScreen = true;
 	public OutputStream outputStream;
 	public boolean connected = false;
+	
 	private static float speed = 10;
 	
 	private int width;
@@ -37,7 +39,10 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	{
 		if(event.getAction() == MotionEvent.ACTION_MOVE) {
 			int x = (int)event.getX();
-			bar.setX((float)x);
+			float left = bar.getX()-bar.getLength();
+			float right = bar.getX()+bar.getLength();
+			if(x>=left&&x<=right)    //for avoiding the bar can be moved faster than light speed.
+				bar.setX((float)x);
 		}
 		
 		return true;
@@ -53,6 +58,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 					onDraw(canvas);
 					ball.onDraw(canvas);
 					bar.onDraw(canvas);
+					bricks.onDraw(canvas);
 				}
         	} finally {
         		if (canvas != null) {
@@ -81,6 +87,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		ball.setXSpeed(speed);
 		ball.setYSpeed(speed);
 		bar = new Bar(this, null, width,height);
+		bricks = new Bricks(this,45);
 		Thread t = new Thread(this);
 		t.start();
 	}
