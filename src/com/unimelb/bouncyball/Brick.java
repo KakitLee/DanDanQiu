@@ -20,7 +20,7 @@ public class Brick {
     private int screenWidth;
     private int screenHeight;
 	
-	private boolean live;
+	private boolean live; 
 	private int hitTimes;
 	
     private WorldView worldView;
@@ -38,6 +38,13 @@ public class Brick {
 		this.screenHeight=worldView.getHeight();
 		this.length = length;
 		this.width = width; 
+	}
+	
+	public Brick ()
+	{
+		this.screenWidth=worldView.getWidth();
+		this.screenHeight=worldView.getHeight();
+		live = true;
 	}
 	
 	public float getLength()
@@ -64,6 +71,46 @@ public class Brick {
 		return live;
 	}
 
+	public Object getHitTimes() {
+		// TODO Auto-generated method stub
+		return hitTimes;
+	}
+	
+	public void setX(float x)
+	{
+		this.x = x;
+	}
+	
+	public void setY(float x)
+	{
+		this.y = y;
+	}
+	
+	public void setLength(float length)
+	{
+		this.length = length;
+	}
+	
+	public void setWidth(float width)
+	{
+		this.width = width;
+	}
+	
+	public void setHitTimes(int times)
+	{
+		hitTimes = times;
+	}
+	
+	public void setLive(Boolean live)
+	{
+		this.live = live;
+	}
+	
+	public void setWorldView(WorldView worldView)
+	{
+		this.worldView = worldView;
+	}
+	
 	public void eliminateBrick(){
 		hitTimes=hitTimes-1;
 		if(hitTimes == 0)
@@ -89,4 +136,6 @@ public class Brick {
     		}
     	}
     }
+
+
 }

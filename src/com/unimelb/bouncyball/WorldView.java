@@ -28,6 +28,11 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	public static int width;
 	public static int height;
 	
+	public static float oldTouchX = 0;
+	public static float newTouchX = 0;	
+	public static float movingSpeed = 0;
+	//private static final String TAG="Main";
+	
 	public WorldView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		getHolder().addCallback(this);
@@ -37,12 +42,21 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
+		if(event.getAction() == MotionEvent.ACTION_DOWN)
+		{
+			oldTouchX = event.getX();
+		}
 		if(event.getAction() == MotionEvent.ACTION_MOVE) {
 			int x = (int)event.getX();
+			newTouchX = x;
+			movingSpeed = (newTouchX - oldTouchX)/10;
+			oldTouchX = newTouchX;
 			float left = bar.getX()-bar.getLength();
 			float right = bar.getX()+bar.getLength();
 			if(x>=left&&x<=right)    //for avoiding the bar can be moved faster than light speed.
 				bar.setX((float)x);
+			//Log.i(TAG,String.valueOf(k));
+
 		}
 		
 		return true;
@@ -55,10 +69,12 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 			try {
 				canvas = surfaceHolder.lockCanvas(null);
 				synchronized(surfaceHolder) {
+					if (canvas != null) {
 					onDraw(canvas);
 					ball.onDraw(canvas);
 					bar.onDraw(canvas);
 					bricks.onDraw(canvas);
+					}
 				}
         	} finally {
         		if (canvas != null) {
@@ -87,7 +103,12 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		ball.setXSpeed(speed);
 		ball.setYSpeed(speed);
 		bar = new Bar(this, null, width,height);
+		
+		//Here we can assign a string calling FromJSON to the following variable bricks,
+		//so that FromJSON should turn string to a object of type Bricks. 
 		bricks = new Bricks(this,45);
+		
+		
 		Thread t = new Thread(this);
 		t.start();
 	}

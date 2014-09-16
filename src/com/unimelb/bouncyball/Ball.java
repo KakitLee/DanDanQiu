@@ -137,7 +137,10 @@ public class Ball {
 			if(x>=leftLine&&x<=rightLine)
 			{
 				if(y+ballRadius>=upperLine)
+				{	
 					ySpeed=-ySpeed;
+					xSpeed=xSpeed+WorldView.movingSpeed;
+				}
 			}
 			else if(x+0.707*ballRadius>=leftLine&&x<leftLine&&xSpeed>0) //0.707 = sqrt(2)/2
 			{
