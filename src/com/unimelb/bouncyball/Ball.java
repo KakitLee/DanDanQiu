@@ -112,22 +112,22 @@ public class Ball {
 	public void detectBoundary()
 	{
 		if(x > screenWidth-ballRadius) {
-    		xSpeed=-xSpeed;
+    		xSpeed=-Math.abs(xSpeed);
     	}
 		else if(x < ballRadius) {
-    		xSpeed=-xSpeed;
+    		xSpeed=Math.abs(xSpeed);
     	}
     	if(y > screenHeight-ballRadius) {
     		ySpeed=-ySpeed;
     	}
     	else if(y < ballRadius) {
     		ySpeed=-ySpeed;
-    	}
+    	} 
 	}
 	
-	public void  detectBarCollision()
+	public void detectBarCollision()
 	{
-		if(ySpeed<0)
+		if(ySpeed<0) //improve efficiency
 			return;
 		else
 		{
@@ -136,7 +136,7 @@ public class Ball {
 			float rightLine = worldView.bar.getX() + worldView.bar.getLength()/2;
 			if(x>=leftLine&&x<=rightLine)
 			{
-				if(y+ballRadius>=upperLine)
+				if(y+ballRadius>=upperLine&&y<upperLine)
 				{	
 					ySpeed=-ySpeed;
 					xSpeed=xSpeed+WorldView.movingSpeed;
@@ -167,17 +167,20 @@ public class Ball {
 		Brick[] bricks = wall.getBricks();
 		float halfWidth = bricks[0].getWidth()/2;
 		float halfLength = bricks[0].getLength()/2;
-		float x,y,upperLine,leftLine,rightLine,bottomLine; //describe the bricks;
+		float x,y,upperLine,leftLine,rightLine,bottomLine,rpi; //describe the bricks;
 		for(int i = 0; i<wall.getNumber(); i++){
 			if(bricks[i].getLive())
 			{
 				x = bricks[i].getX();
 				y = bricks[i].getY();
+				if((Math.abs(y-this.y)>halfWidth+this.ballRadius)||Math.abs(x-this.x)>halfLength+this.ballRadius)
+					continue; //for improving the efficiency 
 				upperLine = y - halfWidth;;
 				leftLine = x - halfLength;
 				rightLine = x + halfLength;
 				bottomLine = y + halfWidth;
-				if(this.x+0.707*ballRadius>=leftLine&&this.x-0.707*ballRadius<=rightLine)
+				rpi = (float) (0.707*ballRadius);
+				if((this.x+rpi)>leftLine&&(this.x-rpi)<rightLine)
 				{
 					if(ySpeed>0&&this.y+ballRadius>=upperLine&&this.y<=upperLine)
 					{	
@@ -191,6 +194,22 @@ public class Ball {
 						bricks[i].eliminateBrick();
 						continue;
 					}
+				}
+				if(this.y+rpi>=upperLine&&this.y-rpi<=bottomLine)
+				{
+					if(xSpeed>0&&this.x+ballRadius>=leftLine&&this.x<=leftLine)
+					{
+						xSpeed=-xSpeed;
+						bricks[i].eliminateBrick();
+						continue;
+					}
+					if(xSpeed<0&&this.x-ballRadius>=rightLine&&this.x<=rightLine)
+					{
+						xSpeed=-xSpeed;
+						bricks[i].eliminateBrick();
+						continue;
+					}
+					
 				}
 			/*	else if(x+0.707*ballRadius>=leftLine&&x<leftLine&&xSpeed>0) //0.707 = sqrt(2)/2
 				{

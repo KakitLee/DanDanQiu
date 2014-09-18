@@ -18,8 +18,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <!-- this activity is we start the game -->
         <activity
-            android:name="com.unimelb.bouncyball.MainActivity"
+            android:name="com.unimelb.bouncyball.MenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+         <!-- main activity we play games here -->
+        <activity
+            android:name="com.unimelb.bouncyball.MainActivity" >
+        </activity>
+        
+        <service  
+            android:name=".BGM"  
+            android:exported="true"  
+            android:process=":remote">  
+              
+        </service>  
+        
     </application>
 
 </manifest>

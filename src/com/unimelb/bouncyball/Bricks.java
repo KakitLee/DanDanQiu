@@ -68,6 +68,14 @@ public class Bricks {
 		}
 	}
 
+	
+	/**After designing a new array of bricks(new maps) then call toJSON,
+	*  we turn it to string(A) and save at the server, then when the user ask 
+	*  for downloading a new maps, server send the String A to the client, 
+	*  then client just call the FromJSON then the string turn to an array of 
+	*  bricks again. then we can onDraw the bricks.  
+	**/
+	
 	public String ToJSON()
 	{ 
 		String MessageType="NewMap";
@@ -77,11 +85,11 @@ public class Bricks {
 			for(int i = 0; i<bricks.length;i++)
 			{
 				JSONObject ABrick=new JSONObject();
-				ABrick.put("xPosition", bricks[i].getX());
-				ABrick.put("yPosition", bricks[i].getY());
+				ABrick.put("xPosition", Float.toString(bricks[i].getX()));
+				ABrick.put("yPosition", Float.toString(bricks[i].getY()));
 				ABrick.put("HitTimes", bricks[i].getHitTimes());
-				ABrick.put("Length",bricks[i].getLength() );
-				ABrick.put("Width", bricks[i].getWidth());
+				ABrick.put("Length",Float.toString(bricks[i].getLength()));
+				ABrick.put("Width", Float.toString(bricks[i].getWidth()));
 				bricksJSON.put(ABrick);
 			}
 			obj.put("Type",MessageType);
@@ -108,14 +116,13 @@ public class Bricks {
 				bricks = new Brick[number];
 				for(int i = 0; i<number; i++)
 				{
-					bricks[i] = new Brick();
+					bricks[i] = new Brick(this.worldView);
 					temp = bricksJSON.getJSONObject(i);
-					bricks[i].setX((Float) temp.get("xPosition"));
-					bricks[i].setY((Float) temp.get("yPosition"));
-					bricks[i].setHitTimes((Integer) temp.get("HitTimes"));
-					bricks[i].setLength((Float) temp.get("Length"));
-					bricks[i].setWidth((Float) temp.get("Width"));
-					bricks[i].setWorldView(this.worldView);
+					bricks[i].setX(Float.valueOf(temp.getString("xPosition")));
+					bricks[i].setY(Float.valueOf(temp.getString("yPosition")));
+					bricks[i].setHitTimes(temp.getInt("HitTimes"));
+					bricks[i].setLength(Float.valueOf(temp.getString("Length")));
+					bricks[i].setWidth(Float.valueOf(temp.getString("Width")));
 				}
 			}
 		} catch (JSONException e) {

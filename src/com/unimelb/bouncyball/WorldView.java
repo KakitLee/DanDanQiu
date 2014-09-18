@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,11 +21,14 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	public Ball ball;
 	public Bar bar;
 	public Bricks bricks;
+
 	public boolean onScreen = true;
 	public OutputStream outputStream;
 	public boolean connected = false;
 	
 	private static float speed = 10;
+	public  static int score = 0;
+	public static int level;
 	
 	public static int width;
 	public static int height;
@@ -31,7 +36,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	public static float oldTouchX = 0;
 	public static float newTouchX = 0;	
 	public static float movingSpeed = 0;
-	//private static final String TAG="Main";
+	private static final String TAG="Main";
 	
 	public WorldView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -82,7 +87,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
         		}
         	}
 			try {
-				Thread.sleep(10);
+				Thread.sleep(5);
 			} catch(Exception e) {}
 		}
 	}
@@ -100,7 +105,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		width = getWidth();
 		height = getHeight();
 		ball = new Ball(this, null, width, height);
-		ball.setXSpeed(speed);
+		ball.setXSpeed(speed-5);
 		ball.setYSpeed(speed);
 		bar = new Bar(this, null, width,height);
 		
@@ -108,7 +113,15 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		//so that FromJSON should turn string to a object of type Bricks. 
 		bricks = new Bricks(this,45);
 		
-		
+		/**Fot testing fromJSON and toJSON
+		String map = bricks.ToJSON();
+		Log.i(TAG,map);
+		Bricks bricksNew = new Bricks(this);
+		bricksNew.FromJSON(map);
+		String mapNew = bricksNew.ToJSON();
+		Log.i(TAG,mapNew);
+		bricks = bricksNew;
+		**/
 		Thread t = new Thread(this);
 		t.start();
 	}
@@ -116,12 +129,24 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	@Override
 	public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 		// TODO Auto-generated method stub
-		
+		score = 0;
 	}
+	
 	
     @Override
     protected void onDraw(Canvas canvas) {
     	//Draw the Background
-    	canvas.drawColor(Color.BLACK);  
+    	/*
+    	 * Paint testPaint = new Paint();
+    	 * textPaint.setCoulr(GREEN);
+    	 * textPaint.drawText("score : 50",x,y,textPaint);
+    	 */
+    	canvas.drawColor(Color.BLACK);
+    	Paint paint = new Paint();
+    	paint.setAntiAlias(true);
+    	paint.setColor(Color.WHITE);
+    	paint.setTextSize(this.height/25);
+    	canvas.drawText("Score: " + Integer.toString(score),0,this.height/25,paint);
+    	canvas.drawText("Level: 1",(float) (this.width*0.7),this.height/25,paint);
     }
 }

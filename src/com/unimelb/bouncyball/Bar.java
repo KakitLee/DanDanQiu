@@ -73,7 +73,6 @@ public class Bar {
     }
 	
 
-
    
     @SuppressLint("DrawAllocation")
 	public void onDraw(Canvas canvas) {

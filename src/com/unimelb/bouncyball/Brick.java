@@ -30,20 +30,21 @@ public class Brick {
 		
 		this.x = x;
 		this.y = y;
-		live = true;
+		this.live = true;
 		Random rn = new Random();
-		hitTimes = rn.nextInt(3) + 1;
-		this.worldView=worldView;
-		this.screenWidth=worldView.getWidth();
-		this.screenHeight=worldView.getHeight();
+		this.hitTimes = rn.nextInt(3) + 1;
+		this.worldView = worldView;
+		this.screenWidth = worldView.getWidth();
+		this.screenHeight = worldView.getHeight();
 		this.length = length;
 		this.width = width; 
 	}
 	
-	public Brick ()
+	public Brick (WorldView worldView)
 	{
 		this.screenWidth=worldView.getWidth();
 		this.screenHeight=worldView.getHeight();
+		this.worldView = worldView;
 		live = true;
 	}
 	
@@ -81,7 +82,7 @@ public class Brick {
 		this.x = x;
 	}
 	
-	public void setY(float x)
+	public void setY(float y)
 	{
 		this.y = y;
 	}
@@ -113,6 +114,7 @@ public class Brick {
 	
 	public void eliminateBrick(){
 		hitTimes=hitTimes-1;
+		WorldView.score = WorldView.score + 100;
 		if(hitTimes == 0)
 			live = false;
 	}
