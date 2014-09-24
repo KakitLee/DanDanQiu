@@ -4,5 +4,7 @@
     <string name="app_name">BreakOut</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+        <string name="result"></string>
+    <string name="score"></string>
 
 </resources>

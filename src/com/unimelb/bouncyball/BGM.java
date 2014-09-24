@@ -57,7 +57,7 @@ public class BGM extends Service {
         try {  
             // 创建MediaPlayer对象  
             mp = new MediaPlayer();  
-            // 将音乐保存在res/raw/xingshu.mp3,R.java中自动生成{public static final int xingshu=0x7f040000;}  
+            // 将音乐保存在res/raw/xingshu.mp3,R.java中自动生成 
             mp = MediaPlayer.create(BGM.this, R.raw.evolution);  
             // 在MediaPlayer取得播放资源与stop()之后要准备PlayBack的状态前一定要使用MediaPlayer.prepeare()  
             mp.prepare();  
@@ -72,6 +72,8 @@ public class BGM extends Service {
         super.onCreate();  
     }  
   
+    
+    
     @Override  
     public void onDestroy() {  
         // TODO Auto-generated method stub  

@@ -88,4 +88,10 @@ public class Bar {
     		canvas.drawRect(r, paint);
     	}
     }
+
+	public void resetCoords() {
+		// TODO Auto-generated method stub
+        setX(screenWidth/2); 
+        setY(9*screenHeight/10);
+	}
 }

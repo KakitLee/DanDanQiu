@@ -60,15 +60,22 @@ public class Bricks {
 	
 	
 	@SuppressLint("WrongCall")
-	public void onDraw(Canvas canvas) {
+	public void onDraw(Canvas canvas) throws Exception {
 		// TODO Auto-generated method stub
+		int count = 0;
 		for(int i = 0; i<bricks.length; i++)
 		{
-			bricks[i].onDraw(canvas);
+			count = count + bricks[i].onDraw(canvas);
+		}
+		if(count == 0)
+		{
+			throw new Exception("load a new map");
 		}
 	}
 
 	
+
+
 	/**After designing a new array of bricks(new maps) then call toJSON,
 	*  we turn it to string(A) and save at the server, then when the user ask 
 	*  for downloading a new maps, server send the String A to the client, 

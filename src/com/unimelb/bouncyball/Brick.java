@@ -119,8 +119,9 @@ public class Brick {
 			live = false;
 	}
 	
+	//return value for counting how many bricks are still alive.
     @SuppressLint("DrawAllocation")
-	public void onDraw(Canvas canvas) {
+	public int onDraw(Canvas canvas) {
     	if(live == true){
     	
     		Paint paint = new Paint();
@@ -136,7 +137,9 @@ public class Brick {
     			RectF r = new RectF(x-length/2,y-width/2,x+length/2,y+width/2);
     			canvas.drawRect(r, paint);
     		}
+    		return 1;
     	}
+    	return 0;
     }
 
 

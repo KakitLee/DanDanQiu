@@ -33,11 +33,14 @@ public class Ball {
           updatePosition(x, y);
     }
     
-    public void resetCoords(float screenWidth, float screenHeight, float x, float y, float xSpeed, float ySpeed) { 
+    public void resetCoordsAndSpeed() { 
     	this.x = (x/screenWidth)*this.screenWidth;
         this.y = ballRadius;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed*-1;
+        setX(screenWidth/2);
+        setY(5*screenHeight/10);
+        float increase = (float) (1 + worldView.getLevel()*0.1);
+        setXSpeed(5*increase);
+        setYSpeed(10*increase);
     }
     
     public float getX() {
@@ -182,13 +185,13 @@ public class Ball {
 				rpi = (float) (0.707*ballRadius);
 				if((this.x+rpi)>leftLine&&(this.x-rpi)<rightLine)
 				{
-					if(ySpeed>0&&this.y+ballRadius>=upperLine&&this.y<=upperLine)
+					if(ySpeed>0&&this.y+ballRadius>=upperLine&&this.y-ballRadius<=upperLine)
 					{	
 						ySpeed=-ySpeed;
 						bricks[i].eliminateBrick();
 						continue;
 					}
-					if(ySpeed<0&&this.y-ballRadius<=bottomLine&&this.y>=bottomLine)
+					if(ySpeed<0&&this.y-ballRadius<=bottomLine&&this.y+ballRadius>=bottomLine)
 					{
 						ySpeed=-ySpeed;
 						bricks[i].eliminateBrick();
@@ -243,11 +246,13 @@ public class Ball {
     	Paint paint = new Paint();
     	paint.setAntiAlias(true);
     	paint.setColor(Color.WHITE);
-    	
-    	updatePhysics();
+    	if(WorldView.pause==false)
+    		{
+    			updatePhysics();
+    			moveBall();
+    		}
 
     	if(worldView.onScreen) {
-    		moveBall();
     		updatePosition(x, y);
     		canvas.drawCircle(x, y, ballRadius, paint);
     	}

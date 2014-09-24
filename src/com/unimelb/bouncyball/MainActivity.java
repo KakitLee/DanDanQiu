@@ -12,10 +12,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +38,8 @@ import java.util.UUID;
 public class MainActivity extends Activity {
 
 	private WorldView worldView;
+	private static final String TAG="Main";
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +47,77 @@ public class MainActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Force device to stay in portrait orientation
 		requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove banner from the top of the activity
 		setContentView(R.layout.activity_main); //Set the layout to activity_main
+		
+		ImageButton  pauseButton =(ImageButton) findViewById(R.id.pauseButton);
+		pauseButton.setImageResource(R.drawable.pause);
+		
 		worldView = (WorldView) findViewById(R.id.worldView);
+		worldView.setLevel(1);
+  
+		//Resources res = getResources();
+		//Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.main_game_wall_paper);
+		//worldView.setWallPaper(bitmap);
+		
 		Intent intent = new Intent(this,BGM.class);  
 		startService(intent);  
+		Log.i(TAG,"this is onCreate");
 	}
+	
+	protected void onStart()
+	{
+		super.onStart();
+		Log.i(TAG,"this is onStart");
+	}
+	
+	protected void onResume(){
+		//Intent intent = new Intent(this,BGM.class);
+		//startService(intent);
+		super.onResume();
+		Log.i(TAG,"this is onResume");
+	}
+	
+	protected void onPause()
+	{
+		super.onPause();
+		Log.i(TAG,"this is onPause");
+	}
+	
 	
 	protected void onStop() {  
 	    // TODO Auto-generated method stub  
 	    Intent intent = new Intent(this,BGM.class);  
 	    stopService(intent);  
 	    super.onStop();  
+	    Log.i(TAG,"this is onStop");
 	}  
 	
+	protected void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		  Log.i(TAG,"this is onSaveInstanceState");
+		  super.onSaveInstanceState(savedInstanceState);
+	}
+	
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+		Log.i(TAG,"this is onRestoreInstanceState");
+	}
+	
+    public void clickPauseOrResume(View view) 
+    {
+    	worldView.pause=!worldView.pause;
+    	ImageButton  pauseButton =(ImageButton) findViewById(R.id.pauseButton);
+    	if(worldView.pause==false)
+    	{
+    		pauseButton.setImageResource(R.drawable.pause);
+    	}
+    	else
+    	{
+    		pauseButton.setImageResource(R.drawable.resume);
+    	}
+    }
+    
+    
 	/*
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {   
@@ -61,5 +130,7 @@ public class MainActivity extends Activity {
 	    }
     } 
     */
+	
+	
 }
 
