@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuActivity extends Activity{
 
@@ -46,6 +47,10 @@ public class MenuActivity extends Activity{
 	    }
 	    
 	}
+	
+	public void clickNewPlayer(View view) {
+        ;
+    }
 	
     public void clickStartGame(View view) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -89,7 +94,9 @@ public class MenuActivity extends Activity{
   		} catch (IOException e) {
 
   		}
-  		level.setText("Data loaded: " +text);
+  		//level.setText("Data loaded: " + text);
+  		Toast.makeText(MenuActivity.this, text, Toast.LENGTH_LONG).show(); 
+        
   	}
     
   	
