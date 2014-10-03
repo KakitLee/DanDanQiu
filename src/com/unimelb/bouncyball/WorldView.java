@@ -2,6 +2,7 @@ package com.unimelb.bouncyball;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -9,9 +10,17 @@ import java.io.IOException;
 
 
 
+
+
+
+
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +28,8 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -45,6 +56,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	private static float speed = 10;
 	public  static int score = 0;
 	public String highScore;
+	private MainActivity mainActivity;
 	public static int level;
 	
 	public static int width;
@@ -102,33 +114,29 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 						ball.onDraw(canvas);
 						bar.onDraw(canvas);
 						bricks.onDraw(canvas);
+						surfaceHolder.unlockCanvasAndPost(canvas);
 					}
 				}
-			}
-				catch (Exception e) //this is an exception because of bricks.onDraw. 
-				//I make it when bricks is all eliminate then throw an exception then we can load a new map
-				{
-					surfaceHolder.unlockCanvasAndPost(canvas);
-					switchLevel(level+1); 
-					initialInterface();
-					canvas = surfaceHolder.lockCanvas(null);
-				}
-				
-                finally {
-        		if (canvas != null) {
-        			surfaceHolder.unlockCanvasAndPost(canvas);
-        		}
         	}
+			catch (Exception e) //this is an exception because of bricks.onDraw. 
+			//I make it when bricks is all eliminate then throw an exception then we can load a new map
+			{
+				surfaceHolder.unlockCanvasAndPost(canvas);
+				switchLevel(level+1); 
+			}
 			try {
 				Thread.sleep(5);
 			} catch(Exception e) {}
 		}
+		mainActivity.finish();
 	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
 		
 	}
+	
+
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -145,6 +153,9 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		//Here we can assign a string calling FromJSON to the following variable bricks,
 		//so that FromJSON should turn string to a object of type Bricks. 
 		
+		checkIfNoLevel();
+		
+		
 		switchLevel(level);
 		
 		/**Fot testing fromJSON and toJSON
@@ -158,6 +169,27 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 		**/
 		Thread t = new Thread(this);
 		t.start();
+	}
+
+	private void checkIfNoLevel() {
+		//if no level-1 create one.
+		String levelFileName = "Level-1.map";
+	    File levelFile = new File("/sdcard/Breakout/Maps/" + levelFileName);
+	    if(!levelFile.exists())
+	    {
+	    	try {
+	    	Bricks firstLevel = new Bricks(this,20);
+	    	String L1 = firstLevel.ToJSON();
+	    	FileOutputStream fos = new FileOutputStream(levelFile);
+			fos.write(L1.getBytes());
+			fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    //end of create level-1
+		
 	}
 
 	@Override
@@ -214,30 +246,78 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public void switchLevel(int level)
     {
     	this.level = level;
-    	String levelFileName = "level-"+Integer.toString(this.level)+".map";
+    	String levelFileName = "Level-"+Integer.toString(this.level)+".map";
 	    File levelFile = new File("/sdcard/Breakout/Maps/" + levelFileName);
 	    if(levelFile.exists())
 	    {
-	    	try {
-	    		BufferedReader br = new BufferedReader(new FileReader(levelFile));
-	    		String theBricks = br.readLine();
-	    		bricks.FromJSON(theBricks);
-	    		ball.resetCoordsAndSpeed();
-	    		bar.resetCoords();
-	    	} catch (IOException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	}
+	    	switchExistLevel(levelFile);
+	    	initialInterface();
 	    }
 	    /**else ask the user to download the new maps.**/
 	    else
-	    {
+	    {  /*
 	    	 Intent intent = new Intent(mContext, downLoadLevel.class);
 	    	    mContext.startActivity(intent);;
+	    	*/
+	    	switchNewDownLevel(levelFile);
 	    }
     }
 
-    @SuppressLint("WrongCall")
+    private void switchNewDownLevel(File levelFile) {
+		// TODO Auto-generated method stub
+    	final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);  
+        builder.setTitle("Info");
+        builder.setMessage("Do you want to download new level?");
+        builder.setCancelable(false);
+        DownLoadLevel positiveButton = new DownLoadLevel(true,level);
+        DownLoadLevel negativeButton = new DownLoadLevel(false,level);
+        
+        builder.setPositiveButton("OK", positiveButton); 
+        builder.setNegativeButton("No, Thanks", negativeButton);  
+        
+        positiveButton.setContext(mContext);//pass the context to the AsyncTask updataLevelActivity
+        
+        mainActivity.runOnUiThread(new Runnable() {   // Use the context here
+            public void run() {
+            	builder.show();
+            }
+        }
+        );
+
+           
+        while(true)
+        {
+        	if(levelFile.exists()||negativeButton.isPressed())
+        		break;
+        }
+        //jump out of the infinite loop
+        // and now levelFile become exists 
+        if(positiveButton.isPressed()&&levelFile.exists())
+        {
+        	switchExistLevel(levelFile);
+        	initialInterface();
+        }
+        if(negativeButton.isPressed())
+        {	
+        	running = false;    	
+        }
+	}
+
+	private void switchExistLevel(File levelFile) {
+    	try {
+    		BufferedReader br = new BufferedReader(new FileReader(levelFile));
+    		String theBricks = br.readLine();
+    		bricks.FromJSON(theBricks);
+    		ball.resetCoordsAndSpeed();
+    		bar.resetCoords();
+    	} catch (IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+		
+	}
+
+	@SuppressLint("WrongCall")
 	public void initialInterface()
     {
     	Canvas canvas = null;
@@ -283,5 +363,25 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
     		}
     	}
     }
+
+	public void saveActivity(MainActivity mainActivity) {
+		// TODO Auto-generated method stub
+		this.mainActivity =mainActivity;
+	}
     
+	public MainActivity getActivity()
+	{
+		return mainActivity;
+	}
+	
+	public boolean getRunning()
+	{
+		return running;
+	}
+	
+	public void setRunning(boolean run)
+	{
+		running = run;
+	}
+	
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="@drawable/main_game_wall_paper">
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_game_wall_paper" >
 
     <CheckBox
         android:id="@+id/checkBox1"
@@ -11,6 +11,3 @@
         android:text="CheckBox" />
 
 </FrameLayout>
-
-
-

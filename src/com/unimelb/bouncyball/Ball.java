@@ -1,5 +1,8 @@
 package com.unimelb.bouncyball;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -31,6 +34,7 @@ public class Ball {
           setXSpeed(0);
           setYSpeed(0);
           updatePosition(x, y);
+          ballRadius = (float) (worldView.getWidth()/72.0);
     }
     
     public void resetCoordsAndSpeed() { 
@@ -121,13 +125,16 @@ public class Ball {
     		xSpeed=Math.abs(xSpeed);
     	}
     	if(y > screenHeight-ballRadius) {
-    		ySpeed=-ySpeed;
+    		//the player lose
+    		//ySpeed=-ySpeed;
+    		generateGameOverDialog();
     	}
     	else if(y < ballRadius) {
     		ySpeed=-ySpeed;
     	} 
 	}
 	
+
 	public void detectBarCollision()
 	{
 		if(ySpeed<0) //improve efficiency
@@ -257,4 +264,47 @@ public class Ball {
     		canvas.drawCircle(x, y, ballRadius, paint);
     	}
     }
+    
+	private void generateGameOverDialog() {
+		
+		Context context = worldView.getContext();
+		final MainActivity mainActivity = worldView.getActivity();
+  		final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+  	  	
+  		// set title
+  		dialog.setTitle("Game Over");
+  	 
+  		// set dialog message
+  		dialog.setMessage("You Lose!");
+  	    dialog.setCancelable(false);
+  		dialog.setNeutralButton("OK",new DialogInterface.OnClickListener() 
+  			{
+  				public void onClick(DialogInterface dialog,int id) 
+  					{
+  					    // if this button is clicked, close
+  					    // current activity
+  					    	   
+  					    dialog.dismiss(); 					  
+  					    worldView.setRunning(false); //set the running to false 
+  					    //in order to exit the while loop below and exit the while lopp in 
+  					    //worldView and finish the activity.
+  				    }
+  			}
+  	   );
+  	 // create alert dialog
+  	 //AlertDialog alertDialog = dgb.create();
+  	 
+
+  	 
+  	mainActivity.runOnUiThread(new Runnable() {   // Use the context here
+        public void run() {
+        	dialog.show();
+        }
+    }
+    );
+  	while(worldView.getRunning())
+  		;
+	
+}
+    
 }

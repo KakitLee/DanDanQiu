@@ -11,11 +11,15 @@ import android.os.IBinder;
   
 public class BGM extends Service {  
     private MediaPlayer mp;  
-  
+    
+    private static BGM self = null;
+    
     @Override  
     public void onStart(Intent intent, int startId) {  
         // TODO Auto-generated method stub  
         // 开始播放音乐  
+    	super.onStart(intent, startId);  
+    	self = this;
         mp.start();  
         // 音乐播放完毕的事件处理  
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  
@@ -47,14 +51,15 @@ public class BGM extends Service {
             }  
         });  
   
-        super.onStart(intent, startId);  
+        
     }  
   
     @Override  
     public void onCreate() {  
         // TODO Auto-generated method stub  
         // 初始化音乐资源  
-        try {  
+        try { 
+        	self = this;
             // 创建MediaPlayer对象  
             mp = new MediaPlayer();  
             // 将音乐保存在res/raw/xingshu.mp3,R.java中自动生成 
@@ -87,7 +92,24 @@ public class BGM extends Service {
     @Override  
     public IBinder onBind(Intent intent) {  
         // TODO Auto-generated method stub  
-        return null;  
+       
+    	return null;  
     }  
   
+    
+    public  void pauseBGM()
+    {
+    	mp.pause();
+    }
+    
+    
+    public void resumeBGM()
+    {
+    	mp.start();
+    }
+    
+    
+    public static BGM getServiceObject(){
+        return self;
+    }
 }  

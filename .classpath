@@ -5,6 +5,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry excluding="com/unimelb/bouncyball/AccelerometerSensor.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="E:/text book/Semester 2/COMP90015 Distributed Systems/Project2/FINAL/lib_needed/json-org.jar"/>
+	<classpathentry kind="lib" path="libs/json-20140107.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

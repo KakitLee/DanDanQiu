@@ -2,6 +2,7 @@ package com.unimelb.bouncyball;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -26,6 +27,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,15 +51,17 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove banner from the top of the activity
 		setContentView(R.layout.activity_main); //Set the layout to activity_main
 		
-		ImageButton  pauseButton =(ImageButton) findViewById(R.id.pauseButton);
+		ImageButton pauseButton =(ImageButton) findViewById(R.id.pauseButton);
 		pauseButton.setImageResource(R.drawable.pause);
 		
 		worldView = (WorldView) findViewById(R.id.worldView);
-		worldView.setLevel(1);
-  
+	    worldView.setLevel(1);
+		worldView.saveActivity(this);
 		//Resources res = getResources();
 		//Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.main_game_wall_paper);
 		//worldView.setWallPaper(bitmap);
+		
+		
 		
 		Intent intent = new Intent(this,BGM.class);  
 		startService(intent);  
@@ -91,6 +96,10 @@ public class MainActivity extends Activity {
 	    Log.i(TAG,"this is onStop");
 	}  
 	
+	protected void onDestory(){
+		super.onDestroy();
+	}
+	
 	protected void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		  Log.i(TAG,"this is onSaveInstanceState");
@@ -106,14 +115,19 @@ public class MainActivity extends Activity {
     public void clickPauseOrResume(View view) 
     {
     	worldView.pause=!worldView.pause;
+    	
     	ImageButton  pauseButton =(ImageButton) findViewById(R.id.pauseButton);
     	if(worldView.pause==false)
     	{
     		pauseButton.setImageResource(R.drawable.pause);
+    	    Intent intent = new Intent(this,BGM.class);  
+    	    startService(intent);  
     	}
     	else
     	{
-    		pauseButton.setImageResource(R.drawable.resume);
+    		pauseButton.setImageResource(R.drawable.resume);//the button become resume
+    	    Intent intent = new Intent(this,BGM.class);  
+    	    stopService(intent); 
     	}
     }
     
@@ -131,6 +145,7 @@ public class MainActivity extends Activity {
     } 
     */
 	
+
 	
 }
 

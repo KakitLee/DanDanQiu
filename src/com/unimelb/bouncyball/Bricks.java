@@ -92,16 +92,16 @@ public class Bricks {
 			for(int i = 0; i<bricks.length;i++)
 			{
 				JSONObject ABrick=new JSONObject();
-				ABrick.put("xPosition", Float.toString(bricks[i].getX()));
-				ABrick.put("yPosition", Float.toString(bricks[i].getY()));
+				ABrick.put("xPosition", Float.toString(bricks[i].getX()/worldView.getWidth()));
+				ABrick.put("yPosition", Float.toString(bricks[i].getY()/worldView.getHeight()));
 				ABrick.put("HitTimes", bricks[i].getHitTimes());
-				ABrick.put("Length",Float.toString(bricks[i].getLength()));
-				ABrick.put("Width", Float.toString(bricks[i].getWidth()));
 				bricksJSON.put(ABrick);
 			}
 			obj.put("Type",MessageType);
-			obj.put("number", bricks.length);
-			obj.put("data", bricksJSON);
+			obj.put("Number", bricks.length);	
+			obj.put("Length",Float.toString(bricks[0].getLength()));//assume all bricks have same length
+			obj.put("Width",Float.toString(bricks[0].getWidth()));//assume all bricks have same width
+			obj.put("Data", bricksJSON);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,18 +118,20 @@ public class Bricks {
 			JSONArray bricksJSON=new JSONArray();
 			if(jsonRoot.get("Type").equals("NewMap"))
 			{	
-				number = (Integer) jsonRoot.get("number");
-				bricksJSON = jsonRoot.getJSONArray("data");
+				number = (Integer) jsonRoot.get("Number");
+				bricksJSON = jsonRoot.getJSONArray("Data");
 				bricks = new Brick[number];
+				float length = Float.valueOf((String) jsonRoot.get("Length"));
+				float width = Float.valueOf((String) jsonRoot.get("Width"));
 				for(int i = 0; i<number; i++)
 				{
 					bricks[i] = new Brick(this.worldView);
 					temp = bricksJSON.getJSONObject(i);
-					bricks[i].setX(Float.valueOf(temp.getString("xPosition")));
-					bricks[i].setY(Float.valueOf(temp.getString("yPosition")));
+					bricks[i].setX(Float.valueOf(temp.getString("xPosition"))*worldView.getWidth());
+					bricks[i].setY(Float.valueOf(temp.getString("yPosition"))*worldView.getHeight());
 					bricks[i].setHitTimes(temp.getInt("HitTimes"));
-					bricks[i].setLength(Float.valueOf(temp.getString("Length")));
-					bricks[i].setWidth(Float.valueOf(temp.getString("Width")));
+					bricks[i].setLength(length);
+					bricks[i].setWidth(width);
 				}
 			}
 		} catch (JSONException e) {
