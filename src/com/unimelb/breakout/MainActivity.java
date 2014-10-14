@@ -186,7 +186,7 @@ public class MainActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         String scoreURL = "http://128.199.134.230/updateScore.php?score="+score+"&username="+username;
-                        final UpdateScoreActivity uploadScoreTask = new UpdateScoreActivity(MainActivity.this);
+                        final UpdateScoreTask uploadScoreTask = new UpdateScoreTask(MainActivity.this);
                         uploadScoreTask.execute(scoreURL);
                         /*new Thread() {
                             @Override
@@ -208,7 +208,7 @@ public class MainActivity extends Activity {
                 builder.setNegativeButton(R.string.btn_no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        rData.setUploaded(true);
+                        clearScoreAndSetUploaded();
                         MainActivity.this.finish();
                     }
                 });
@@ -233,6 +233,7 @@ public class MainActivity extends Activity {
                         // if this button is clicked, close
                         // current activity
                         dialog.dismiss(); 
+                        clearScoreAndSetUploaded();
                         MainActivity.this.finish();
                         //set the running to false 
                         //in order to exit the while loop below and exit the while loop in 
@@ -241,7 +242,18 @@ public class MainActivity extends Activity {
                 });
                 dialog.show();
             }
-        });        
+        });
+    }
+    
+    public void clearScoreAndSetUploaded() {
+        rData.setScore(0);
+        rData.setUploaded(true);
+        SharedPreferences sharedPref = getSharedPreferences(MenuActivity.PREF, 
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("SAVED.SCORE", rData.getScore());
+        editor.putBoolean("SAVED.UPLOADED", rData.isUploaded());
+        editor.commit();
     }
 
     public RuntimeData getrData() {

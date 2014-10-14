@@ -54,6 +54,8 @@ public class MenuActivity extends Activity{
                 setSavedRuntimeData();
             }
         }
+        downloadTopTenRecords();
+        
         welcome = (TextView)findViewById(R.id.welcome);
         if (rData.getName() != null) {
             welcome.setText("Welcome " + Utils.nameInitials(rData.getName()));
@@ -111,36 +113,28 @@ public class MenuActivity extends Activity{
             builder.create().show();
         }  else if (!levelFile.exists()) {
             Log.d(TAG, "level.1.map exists?" + String.valueOf(levelFile.exists()));
-            rData.setLevel(1);
-            rData.setLives(3);
-            rData.setScore(0);
-            rData.setUploaded(false);
+            initNewGame();
             switchNewDownLevel(levelFile);
         } else if (rData.getScore() > 0 && !rData.isUploaded()) {
             builder.setMessage(R.string.warn_new_game);
             builder.setPositiveButton(R.string.lbl_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    rData.setLevel(1);
-                    rData.setLives(3);
-                    rData.setScore(0);
-                    rData.setUploaded(false);
+                    initNewGame();
                     loadFilesToGame();
                 }
             });
             builder.setNegativeButton(R.string.lbl_cancel, null);
             builder.create().show();
         } else {
-                rData.setLevel(1);
-                rData.setLives(3);
-                rData.setScore(0);
-                rData.setUploaded(false);
-                loadFilesToGame();
+            initNewGame();
+            loadFilesToGame();
         }
     }
 	
 	public void clickContinue(View view) {
-	    if (rData.getBricks() != null && !rData.getBricks().isFinished() && rData.getLives() != 0) {
+	    if (rData.getBricks() != null && !rData.getBricks().isFinished() && 
+	            rData.getLives() != 0) {
 	        callActivityForResult(MainActivity.class);
 	    } else {
 	        Toast.makeText(this, R.string.no_continue, Toast.LENGTH_LONG).show(); 
@@ -182,20 +176,20 @@ public class MenuActivity extends Activity{
   		**/
   		
   		String levelURL = "http://128.199.134.230/level.php?levelID=";
-  		UpdateAllAvailableLevel updateAll = new UpdateAllAvailableLevel(); 												
+  		UpdateAllLevelTask updateAll = new UpdateAllLevelTask(); 												
   	  	updateAll.setContext(this);
   	  	updateAll.execute(levelURL);
   	}
     
   	public void clickHighScore(View view) {
   	    rData.setRecordShow(true);
-  	    RetrieveHighScoreActivity task = new RetrieveHighScoreActivity(rData);
+  	    RetrieveHighScoreTask task = new RetrieveHighScoreTask(rData);
   	    task.setContext(this);
   	    task.execute(rData);
     }
   	
     public void clickHelp(View view) {
-        Intent intent = new Intent(this, HelpDisplay.class);
+        Intent intent = new Intent(this, HelpDisplayActivity.class);
         startActivity(intent);
   	}
 
@@ -361,6 +355,26 @@ public class MenuActivity extends Activity{
         }
     }
     
+    private void downloadTopTenRecords() {
+        rData.setRecordShow(false);
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                RetrieveHighScoreTask task = new RetrieveHighScoreTask(rData);
+                task.setContext(MenuActivity.this);
+                task.execute(rData);
+            }
+        });
+    }
+    
+    private void initNewGame() {
+        rData.setLevel(1);
+        rData.setLives(3);
+        rData.setScore(0);
+        rData.setNext(-1);
+        rData.setRank(-1);
+        rData.setUploaded(false);
+    }
+    
     private void switchNewDownLevel(File levelFile) {
         this.runOnUiThread(new Runnable() {   // Use the context here
             public void run() {
@@ -369,8 +383,8 @@ public class MenuActivity extends Activity{
                 builder.setMessage("There is no level file in local storage. "
                         + "Do you wish to download one from the server?");
                 builder.setCancelable(false);
-                DownLoadLevel positiveButton = new DownLoadLevel(true, rData.getLevel());
-                DownLoadLevel negativeButton = new DownLoadLevel(false, rData.getLevel());
+                DownLoadLevelListener positiveButton = new DownLoadLevelListener(true, rData.getLevel());
+                DownLoadLevelListener negativeButton = new DownLoadLevelListener(false, rData.getLevel());
                 
                 builder.setPositiveButton("Yes", positiveButton); 
                 builder.setNegativeButton("No, maybe later", negativeButton);  

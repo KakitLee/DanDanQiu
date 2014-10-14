@@ -1,28 +1,11 @@
 package com.unimelb.breakout;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 
-import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 
-
-
-public class DownLoadLevel  implements DialogInterface.OnClickListener{  
+public class DownLoadLevelListener implements DialogInterface.OnClickListener{  
    
 	private boolean comfirm;
 	private int level; 
@@ -30,7 +13,7 @@ public class DownLoadLevel  implements DialogInterface.OnClickListener{
 	private Context context;
 	private static final String TAG="Main";
 	
-	public DownLoadLevel(boolean answer, int level)
+	public DownLoadLevelListener(boolean answer, int level)
 	{
 		comfirm = answer;
 		this.level = level;
@@ -45,7 +28,7 @@ public class DownLoadLevel  implements DialogInterface.OnClickListener{
 //        		File root = android.os.Environment.getExternalStorageDirectory(); 
         		File file = new File (context.getFilesDir().getPath() + FILENAME);
         		
-        		UpdateLevelActivity UA = new UpdateLevelActivity(null, file);
+        		UpdateLevelTask UA = new UpdateLevelTask(null, file);
         		UA.setLevel(level);
         		UA.setContext(context);
         		UA.execute(levelURL);        		

@@ -1,6 +1,5 @@
 package com.unimelb.breakout;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +19,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
-public class UpdateLevelActivity extends AsyncTask<String, String, String> {
+public class UpdateLevelTask extends AsyncTask<String, String, String> {
 	private TextView levelField;
 
 	private OutputStream out = null;
@@ -35,7 +34,7 @@ public class UpdateLevelActivity extends AsyncTask<String, String, String> {
 	private static final String TAG="Main";
 	static Object lock = new Object();
 	
-	public UpdateLevelActivity(TextView level,File file) {
+	public UpdateLevelTask(TextView level,File file) {
 		this.levelField = level;
 		this.file = file;
 	}

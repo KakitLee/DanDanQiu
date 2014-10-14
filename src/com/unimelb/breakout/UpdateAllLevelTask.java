@@ -22,20 +22,20 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UpdateAllAvailableLevel extends AsyncTask<String, String, String> {
+public class UpdateAllLevelTask extends AsyncTask<String, String, String> {
 	
 	
-	private TextView info;
+//	private TextView info;
 
 	private ProgressDialog pg;
 	private  int steps = 0;
-	private int level;
+//	private int level;
 	private boolean finished;
 	private Context context;
 	private static final String TAG="Main";
 	private int updateCounter = 0;
 	
-	public  UpdateAllAvailableLevel	()
+	public  UpdateAllLevelTask	()
 	{
 		//this.info = info;
 	}
@@ -76,7 +76,7 @@ public class UpdateAllAvailableLevel extends AsyncTask<String, String, String> {
   				{// Update all level anyway
   					//pg.setTitle("Update Level" + Integer.toString(i));
   					pg.setProgress(0);
-  					StringBuffer sb = new StringBuffer("");
+//  					StringBuffer sb = new StringBuffer("");
 			
   					HttpClient client = new DefaultHttpClient();
   					HttpGet request = new HttpGet();
@@ -179,10 +179,10 @@ public class UpdateAllAvailableLevel extends AsyncTask<String, String, String> {
 		finished = true;
 	}
 
-	public void setLevel(int Newlevel) {
-		// TODO Auto-generated method stub
-		level = Newlevel;
-	}
+//	public void setLevel(int Newlevel) {
+//		// TODO Auto-generated method stub
+//		level = Newlevel;
+//	}
 
 	public void setContext(Context context) {
 		// TODO Auto-generated method stub

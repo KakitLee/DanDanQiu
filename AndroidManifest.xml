@@ -52,7 +52,7 @@
         <activity android:name="com.unimelb.breakout.downLoadLevel" >
         </activity>
 		<activity 
-		    android:name="com.unimelb.breakout.HelpDisplay"
+		    android:name="com.unimelb.breakout.HelpDisplayActivity"
 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity 

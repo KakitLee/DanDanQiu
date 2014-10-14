@@ -186,7 +186,10 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     }
                 } else if (onPlayData.isClear()) { // bricks are gone
                     if (rData.getLevel() == rData.getTotalLevels()) {
-                        if (isInTopTen(rData.getScore())) {
+                        // Update the final score with remaining livers
+                        int finalScore = rData.getScore() + 1000 * rData.getLives();
+                        rData.setScore(finalScore);
+                        if (isInTopTen(finalScore)) {
                             mainActivity.askForEntry(rData.getScore(), rData.getName());
                         } else {
                             mainActivity.generateGameOverDialog();
@@ -361,8 +364,8 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
                 builder.setTitle("Info");
                 builder.setMessage("Do you want to download new level from the server?");
                 builder.setCancelable(false);
-                DownLoadLevel positiveButton = new DownLoadLevel(true, rData.getLevel());
-                DownLoadLevel negativeButton = new DownLoadLevel(false, rData.getLevel());
+                DownLoadLevelListener positiveButton = new DownLoadLevelListener(true, rData.getLevel());
+                DownLoadLevelListener negativeButton = new DownLoadLevelListener(false, rData.getLevel());
                 
                 builder.setPositiveButton("Yes", positiveButton); 
                 builder.setNegativeButton("No, maybe later", negativeButton);  

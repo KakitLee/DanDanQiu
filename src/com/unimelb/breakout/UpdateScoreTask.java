@@ -3,29 +3,28 @@ package com.unimelb.breakout;
 
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-public class UpdateScoreActivity extends AsyncTask<String, Integer, String> {
+public class UpdateScoreTask extends AsyncTask<String, Integer, String> {
     private ProgressDialog pg;
 
 	OutputStream out = null;
 	MainActivity main;
 
-	public UpdateScoreActivity(MainActivity main) {
+	public UpdateScoreTask(MainActivity main) {
 	    this.main = main;
     }
 	
@@ -62,18 +61,26 @@ public class UpdateScoreActivity extends AsyncTask<String, Integer, String> {
 	
 	@Override
     public void onProgressUpdate(Integer... params) {
-	    UpdateScoreActivity.this.pg.setProgress(params[0]);
+	    UpdateScoreTask.this.pg.setProgress(params[0]);
     }
 
 	@Override
 	protected void onPostExecute(String result) {
 	    if (result.equalsIgnoreCase("ok")) {
-	        //Intent intent = new Intent();
-	        //intent.setClass(act, ShowLeaderBoardActivity.class);
-	        main.getrData().setUploaded(true);
-	        //main.startActivity(intent);
-	        main.finish();
 	        Log.i("updatescore", "ok");
+	        main.getrData().setUploaded(true);
+
+            //Intent intent = new Intent();
+            //intent.setClass(act, ShowLeaderBoardActivity.class);
+	        //main.startActivity(intent);
+	        main.getrData().setRecordShow(true);
+	        main.runOnUiThread(new Runnable() {
+	            public void run() {
+	                RetrieveHighScoreTask task = new RetrieveHighScoreTask(main.getrData());
+	                task.setContext(main);
+	                task.execute(main.getrData());
+	            }
+	        });	        
 	    } else {
 	        AlertDialog.Builder builder = new Builder(main);
             builder.setMessage("Error occurred when uploading high score. ");
@@ -85,7 +92,7 @@ public class UpdateScoreActivity extends AsyncTask<String, Integer, String> {
                     int score = main.getrData().getScore();
                     String username = main.getrData().getName();
                     String scoreURL = "http://128.199.134.230/updateScore.php?score="+score+"&username="+username;
-                    new UpdateScoreActivity(main).execute(scoreURL);
+                    new UpdateScoreTask(main).execute(scoreURL);
                 }
             });
             builder.setNegativeButton("Cancel Upload", new DialogInterface.OnClickListener() {

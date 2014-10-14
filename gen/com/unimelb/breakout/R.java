@@ -81,9 +81,9 @@ public final class R {
         public static final int newPlayerButton=0x7f0a0018;
         public static final int pauseButton=0x7f0a0000;
         public static final int player_name=0x7f0a0026;
-        public static final int recName=0x7f0a002d;
+        public static final int recName=0x7f0a002c;
         public static final int recRank=0x7f0a002b;
-        public static final int recScore=0x7f0a002c;
+        public static final int recScore=0x7f0a002d;
         public static final int selectLevelButton=0x7f0a001b;
         public static final int startNewGameButton=0x7f0a0019;
         public static final int tableRow1=0x7f0a0001;
