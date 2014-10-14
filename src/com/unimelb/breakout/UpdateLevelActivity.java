@@ -1,4 +1,4 @@
-package com.unimelb.bouncyball;
+package com.unimelb.breakout;
 
 
 import java.io.BufferedReader;
@@ -160,6 +160,15 @@ public class UpdateLevelActivity extends AsyncTask<String, String, String> {
 		if(pg!=null)
 			pg.dismiss();
 		finished = true;
+		
+		 final LoadFilesTask task = new LoadFilesTask(context);
+		 if (context.getClass() == MenuActivity.class ) {
+		     task.execute(((MenuActivity) context).getrData());
+		 } else if(context.getClass() == MainActivity.class ) {
+		     task.execute(((MainActivity) context).getrData());
+		 }
+         
+         
 		Log.i(TAG,"levle "+Integer.toString(level) + " complete");
 	}
 

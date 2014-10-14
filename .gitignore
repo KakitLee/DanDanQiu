@@ -35,8 +35,8 @@ Icon
 .Spotlight-V100
 .Trashes
 
-/bin/
-!/bin/*.apk
+bin/**/*
+!bin/Breakout.apk
 .classpath
 .project
 .gitattributes

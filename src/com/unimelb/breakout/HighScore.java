@@ -1,4 +1,4 @@
-package com.unimelb.bouncyball;
+package com.unimelb.breakout;
 
 import java.io.BufferedReader;
 

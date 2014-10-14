@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Breakout</string>
+    <string name="app_name">Breakout2</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="result"></string>
     <string name="score"></string>
     <string name="menu">menu</string>
+    <string name="welcome">Welcome :)</string>
     <string name="new_player">New Player</string>
+    <string name="lbl_confirm"> Confirm </string>
+    <string name="player_name_msg">You may enter at least 1 and at most 20 letters.</string>
+    <string name="input_player">Please input a player name:</string>
+    <string name="tip_player"> only letters and space here</string>
+	<string name="lbl_ok">OK</string>
+	<string name="lbl_cancel">Cancel</string>
+	<string name="warn_new_player">Warning: all data of current player will be cleared.</string>
+	<string name="loading_text">Loading files&#8230;</string>
+	<string name="err_load_level">Error occurred when loading level files. Please try again Later.</string>
     <string name="exit">Exit</string>
-    <string name="start_game">Start Game</string>
+    <string name="start_new_game">Start New Game</string>
+    <string name="no_player">Please enter a player name before starting a new game.</string>
+    <string name="warn_new_game">Warning: your current score/lives/level data will be cleared.</string>
+    <string name="lbl_goto_player">Enter Player Name</string>
+    <string name="menu_continue">Continue</string>
+    <string name="no_continue">There is no game on pause. Please select a level or a new game.</string>
     <string name="update_level">Update Level</string>
+    <string name="msg_score_entry">Great job! Your high score is top 10. Would you like to make an entry in High Score List?</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
     <string name="leader_board">Leader Board</string>
-    <string name="read_level_data">Read Level Data</string>
+    <string name="select_level">Select Game Level</string>
+    <string name="lbl_list_rtn">Return</string>
     <string name="message_no_data">No data has been downloaded yet</string>
     <string name="help">Help</string>
+    <string name="help_content">In this project you will develop a breakout game for Games Unlimited. The goal of the game is to remove all bricks with a ball that is hit by the player. A brick is removed once it has been hit by the player’s ball. The ball bounces off the removed brick. The player’s ball is controlled by a paddle. The ball bounces from all edges but the lower edge. If the ball hits the lower edge of the playing area, a life is lost. A player has up to three lives. If all bricks are removed from the player’s screen, the game advances to the next level. If the player has no more lives left, the game is over. If the high score is in the current top 10, the game asks the player, if an entry to the high score list is desired.\nThe game shows in the upper right the current score, the next score the player has to beat to move up one place in the high score list, and the current rank in the high score list (based on the current score). If the player is currently not in the top 10, the rank field would just show “-“. In the lower right, the game displays the current game level, the remaining lives, and the initials of the player.\nThe program has to be able to open game levels from a server and to store (and open) them locally on persistent storage. In addition, the program has to be able to read a high score file from a server and update it, if the player’s high score is in the top 10 and the player requests an entry in the high score list.\nWhen the player starts a game a welcome screen lets the player select whether he or she wants to start a new game, download a new level from the server via a http connection, open a local level, access the game rules in form of a help screen, see the current (top 10) high scores, or end the game. If the user has to wait, for example, while downloading a level, the program needs to show a progress bar. Similarly, in case of exceptional circumstances, such as an unavailable connection to the server or a game level that cannot be properly initiated (due to a mistake in the level design), the program should provide appropriate feedback to the player.</string>
+	<string name="lbl_back">Back</string>
+    <string name="lbl_score">Score:</string>
+    <string name="lbl_next">Next:</string>
+    <string name="lbl_rank">Rank:</string>
+    <string name="lbl_level">Level:</string>
+    <string name="lbl_lives">Lives:</string>
+    <string name="lbl_player">Player:</string>
+    <string name="txt_na">-</string>
+    <string name="downloadText">Downloading top 10 score records</string>
+    <string name="pause">Pause</string>
+    <string name="tip_ready">Ready? Tap to start.</string>
+    <string name="go">GO!</string>
 
 </resources>
