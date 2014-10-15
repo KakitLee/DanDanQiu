@@ -1,19 +1,24 @@
 package com.unimelb.breakout;
 
+/**
+ * COMP90018 Mobile Computing System Programming, Project Breakout Game
+ * Semester 2, 2014
+ * Group 25
+ * Students: (Name, StudentNumber, Email)
+ *          Chenchao Ye, 633657, chenchaoy@student.unimelb.edu.au
+ *          Fengmin Deng, 659332, dengf@student.unimelb.edu.au
+ *          Jiajie Li, 631482, jiajiel@student.unimelb.edu.au
+ *          Shuangchao Yin, 612511, shuangchaoy@student.unimelb.edu.au
+ */
+
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 public class Bricks implements Serializable {
     String TAG = "bricks";

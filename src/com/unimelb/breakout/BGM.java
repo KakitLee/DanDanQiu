@@ -1,7 +1,5 @@
 package com.unimelb.breakout;
 
-
-
 import java.io.IOException;  
   
 import android.app.Service;  

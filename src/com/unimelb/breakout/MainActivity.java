@@ -1,7 +1,15 @@
 package com.unimelb.breakout;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+/**
+ * COMP90018 Mobile Computing System Programming, Project Breakout Game
+ * Semester 2, 2014
+ * Group 25
+ * Students: (Name, StudentNumber, Email)
+ *          Chenchao Ye, 633657, chenchaoy@student.unimelb.edu.au
+ *          Fengmin Deng, 659332, dengf@student.unimelb.edu.au
+ *          Jiajie Li, 631482, jiajiel@student.unimelb.edu.au
+ *          Shuangchao Yin, 612511, shuangchaoy@student.unimelb.edu.au
+ */
 
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -9,6 +17,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,9 +25,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();    
@@ -52,24 +59,26 @@ public class MainActivity extends Activity {
 		//requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove banner from the top of the activity
 		setContentView(R.layout.activity_main); //Set the layout to activity_main
 		
+		if (rData.getLives() > 0) 
+            displayReadyScreen();
+        
+        score = (TextView)findViewById(R.id.val_score);
+        lives = (TextView)findViewById(R.id.val_lives);
+        level = (TextView)findViewById(R.id.val_level);
+        rank = (TextView)findViewById(R.id.val_rank);
+        next = (TextView)findViewById(R.id.val_next);
+        name = (TextView)findViewById(R.id.val_player);     
+        
 		sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		collideId = sp.load(this, R.raw.collide, 1);
 		
 		ImageButton pauseButton = (ImageButton) findViewById(R.id.pauseButton);
 		pauseButton.setImageResource(R.drawable.pause);
 		
-		if (rData.getLives() > 0) 
-		    displayReadyScreen();
-		
-        score = (TextView)findViewById(R.id.val_score);
-        lives = (TextView)findViewById(R.id.val_lives);
-        level = (TextView)findViewById(R.id.val_level);
-        rank = (TextView)findViewById(R.id.val_rank);
-        next = (TextView)findViewById(R.id.val_next);
-        name = (TextView)findViewById(R.id.val_player);	    
-		
-		/*Intent intent = new Intent(this,BGM.class);  
-		startService(intent);*/
+//		ImageButton musicButton = (ImageButton) findViewById(R.id.musicButton);
+//		musicButton.setImageResource(R.drawable.music_on);
+//		Intent intent = new Intent(this,BGM.class);  
+//		startService(intent);
 		Log.d(TAG,"game view onCreate");
 	}
 	
@@ -121,8 +130,16 @@ public class MainActivity extends Activity {
     }
     
     public void clickPauseOrResume(View view) {
-    	//worldView.pause=!worldView.pause;
-    	ImageButton  pauseButton =(ImageButton) findViewById(R.id.pauseButton);
+    	worldView.setPause(!worldView.getPause());
+    	ImageButton pauseButton =(ImageButton) findViewById(R.id.pauseButton);
+    	if (worldView.getPause() == true) { // game is running
+    	    pauseButton.setImageResource(R.drawable.resume);
+    	    rData.setRunning(false);
+    	} else {
+    	    pauseButton.setImageResource(R.drawable.pause);
+    	    rData.setRunning(true);
+            new Thread(worldView).start();
+    	}
     	/*if(worldView.pause==false) {
     		pauseButton.setImageResource(R.drawable.pause);
     	    Intent intent = new Intent(this,BGM.class);  
@@ -134,6 +151,11 @@ public class MainActivity extends Activity {
     	    stopService(intent); 
     	}*/
     }
+    
+//    public void clickMusic(View view) {
+//        ImageButton musicButton = (ImageButton) findViewById(R.id.musicButton);
+//        musicButton.setImageResource(R.drawable.music_off);
+//    }
     
     public void showRuntimeData(){
         this.runOnUiThread(new Runnable() {     
@@ -179,6 +201,7 @@ public class MainActivity extends Activity {
         this.runOnUiThread(new Runnable() {     
             public void run() {
                 AlertDialog.Builder builder = new Builder(MainActivity.this);
+                builder.setTitle(R.string.title_score_entry);
                 builder.setMessage(R.string.msg_score_entry);
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {

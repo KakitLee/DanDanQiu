@@ -1,41 +1,34 @@
 package com.unimelb.breakout;
 
-import java.io.BufferedReader;
+/**
+ * COMP90018 Mobile Computing System Programming, Project Breakout Game
+ * Semester 2, 2014
+ * Group 25
+ * Students: (Name, StudentNumber, Email)
+ *          Chenchao Ye, 633657, chenchaoy@student.unimelb.edu.au
+ *          Fengmin Deng, 659332, dengf@student.unimelb.edu.au
+ *          Jiajie Li, 631482, jiajiel@student.unimelb.edu.au
+ *          Shuangchao Yin, 612511, shuangchaoy@student.unimelb.edu.au
+ */
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.media.SoundPool;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
-
 
 public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     private static final String TAG = WorldView.class.getName();
@@ -54,6 +47,7 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
 	private volatile float BarLengthFactor;
 	private volatile SoundPool sp;
     private volatile int collideId;
+    private volatile boolean pause;
 	
 	/*public static boolean pause = false;
 	public boolean connected = false;*/
@@ -409,5 +403,13 @@ public class WorldView extends SurfaceView implements SurfaceHolder.Callback, Ru
         rData.setBall(new Ball(initBallx, initBally,
                 initBallXSpeed, initBallYSpeed, gameViewWidth, gameViewHeight, bar));
         Log.d(TAG, "initBallAndBar");
+    }
+
+    public boolean getPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 }

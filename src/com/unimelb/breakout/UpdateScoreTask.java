@@ -1,5 +1,15 @@
 package com.unimelb.breakout;
 
+/**
+ * COMP90018 Mobile Computing System Programming, Project Breakout Game
+ * Semester 2, 2014
+ * Group 25
+ * Students: (Name, StudentNumber, Email)
+ *          Chenchao Ye, 633657, chenchaoy@student.unimelb.edu.au
+ *          Fengmin Deng, 659332, dengf@student.unimelb.edu.au
+ *          Jiajie Li, 631482, jiajiel@student.unimelb.edu.au
+ *          Shuangchao Yin, 612511, shuangchaoy@student.unimelb.edu.au
+ */
 
 import java.io.OutputStream;
 import java.net.URI;
@@ -12,9 +22,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 

@@ -1,11 +1,21 @@
 package com.unimelb.breakout;
 
+/**
+ * COMP90018 Mobile Computing System Programming, Project Breakout Game
+ * Semester 2, 2014
+ * Group 25
+ * Students: (Name, StudentNumber, Email)
+ *          Chenchao Ye, 633657, chenchaoy@student.unimelb.edu.au
+ *          Fengmin Deng, 659332, dengf@student.unimelb.edu.au
+ *          Jiajie Li, 631482, jiajiel@student.unimelb.edu.au
+ *          Shuangchao Yin, 612511, shuangchaoy@student.unimelb.edu.au
+ */
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URI;
 
 import org.apache.http.HttpResponse;
@@ -22,9 +32,9 @@ import android.widget.TextView;
 public class UpdateLevelTask extends AsyncTask<String, String, String> {
 	private TextView levelField;
 
-	private OutputStream out = null;
-	private InputStream in = null;
-	private Context ctx;
+//	private OutputStream out = null;
+//	private InputStream in = null;
+//	private Context ctx;
 	private File file;
 	private ProgressDialog pg;
 	private  int steps = 0;
@@ -62,7 +72,7 @@ public class UpdateLevelTask extends AsyncTask<String, String, String> {
 
 			String url = urls[0] + Integer.toString(level);
 			Log.i(TAG,"url is " + url);
-			StringBuffer sb = new StringBuffer("");
+//			StringBuffer sb = new StringBuffer("");
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
